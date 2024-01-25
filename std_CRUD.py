@@ -6,11 +6,11 @@ app = Flask(__name__)
 
 client = MongoClient('mongodb+srv://kutest:ku123456_@cluster0.g4suicj.mongodb.net/?retryWrites=true&w=majority') 
 
-db = client['students']       #ชื่อ db
+db = client['students']       
 collection = db['std_info']   
 
-app.config['BASIC_AUTH_USERNAME'] = '1'   #username
-app.config['BASIC_AUTH_PASSWORD'] = '1'   #password
+app.config['BASIC_AUTH_USERNAME'] = '1'   
+app.config['BASIC_AUTH_PASSWORD'] = '1'   
 
 basic_auth = BasicAuth(app)
 
@@ -24,13 +24,11 @@ formatted_students = [
 def welcome():
     return "Welcome to Student Management API"
 
-#ดูนักเรียนทั้งหมด
 @app.route('/students', methods=['GET'])
 @basic_auth.required
 def get_all_students():
     return jsonify(formatted_students)
 
-#ดูนักเรียนบางคนทั้งหมด
 @app.route('/students/<int:std_id>', methods=['GET'])
 @basic_auth.required
 def get_student(std_id):
@@ -40,7 +38,6 @@ def get_student(std_id):
     else:
         return jsonify({"error": "Student not found"}), 404
 
-#เพิ่มนักเรียน
 @app.route('/students', methods=['POST'])
 @basic_auth.required
 def create_student():
@@ -56,7 +53,6 @@ def create_student():
 
     return jsonify(new_student_data), 200
 
-#อัปเดตข้อมูลนักเรียน ยกเว้น id  
 @app.route('/students/<int:std_id>', methods=['PUT'])
 @basic_auth.required
 def update_student(std_id):
@@ -79,7 +75,6 @@ def update_student(std_id):
     else:
         return jsonify({"error": "Student not found"}), 404
 
-#ลบนักเรียน
 @app.route('/students/<int:std_id>', methods=['DELETE'])
 @basic_auth.required
 def delete_student(std_id):
